@@ -37,8 +37,8 @@ The frontend contains visualizations that will help someone analyze stock price 
    https://www.python.org/downloads/release/python-370/
    https://pypi.org/project/pipenv/
 
-6. Rename .env.example to .env
-7. CD into backend
+6. Rename .env.example to .env `mv .env.example .env`
+7. Enter backend directory `cd backend`
 8. Run `pipenv --python 3.7`
 9. Run `pipenv install`
 10. Run `pipenv run dev`
