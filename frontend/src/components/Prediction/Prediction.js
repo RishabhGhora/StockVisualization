@@ -287,7 +287,7 @@ export default function Prediction() {
 					values and see the impact on a company's closing stock price.
 				</p>
 			</div>
-			<table className="tg" width="99%">
+			<table className="tg" width="98%" style={{ marginLeft: '10px' }}>
 				<thead>
 					<tr>
 						<th className="tg-0lax"></th>

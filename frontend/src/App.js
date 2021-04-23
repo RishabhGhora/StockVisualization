@@ -34,21 +34,21 @@ export default function App() {
 					<ProSidebar style={{ height: window.screen.height }}>
 						<SidebarHeader className="sidebar-header">Stock Viz</SidebarHeader>
 						<Menu iconShape="square">
-							<MenuItem onClick={() => setGraph('graph1')}>
+							<MenuItem onClick={() => setGraph('graph1')} className="menuItem">
 								<FontAwesomeIcon
 									icon={faChartLine}
 									style={{ paddingRight: '5px' }}
 								/>
 								Financial Dashboard
 							</MenuItem>
-							<MenuItem onClick={() => setGraph('graph2')}>
+							<MenuItem onClick={() => setGraph('graph2')} className="menuItem">
 								<FontAwesomeIcon
 									icon={faMoneyCheck}
 									style={{ paddingRight: '5px' }}
 								/>
 								Predict Stock Price
 							</MenuItem>
-							<MenuItem onClick={() => setGraph('graph3')}>
+							<MenuItem onClick={() => setGraph('graph3')} className="menuItem">
 								<FontAwesomeIcon
 									icon={faComment}
 									style={{ paddingRight: '5px' }}

@@ -20,23 +20,23 @@
 .left-half {
 	text-align: center;
 	float: left;
-	width: 20%;
+	width: 15%;
 	color: black;
 	overflow: hidden;
+	box-shadow: 10px 0 5px -2px #888;
 }
 
 .right-half {
 	text-align: left;
 	float: right;
 	height: 100vh;
-	width: 80%;
+	width: 85%;
 	color: black;
 	overflow: auto;
 }
 
 .pro-sidebar-layout {
 	background-color: #025955;
-	box-shadow: 10px 0 5px -2px #888;
 }
 
 .pro-sidebar-inner {
@@ -51,4 +51,9 @@
 .pro-sidebar > .pro-sidebar-inner > .pro-sidebar-layout .pro-sidebar-header {
 	border-bottom: 0px solid rgba(173, 173, 173, 0.2);
 	font-weight: 700;
+}
+
+.pro-item-content {
+	font-size: 14px;
+	margin-top: 10px;
 }

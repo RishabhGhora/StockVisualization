@@ -101,3 +101,8 @@ path.line {
 	display: flex;
 	justify-content: center;
 }
+
+.title-container {
+	position: relative;
+	z-index: -1;
+}
