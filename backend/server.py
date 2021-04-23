@@ -53,6 +53,8 @@ def get_sentiment():
 
     # Create dataframe
     df = pd.DataFrame(data)
+    if (len(df.index) == 0) :
+        return jsonify({'error': 'Could not find any tweets or input had invalid character such as "$"'})
     keys1, keys2 = [], []
 
     # Get data for graphs 

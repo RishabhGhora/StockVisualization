@@ -12,8 +12,8 @@ export default function Sentiment() {
 			return
 		}
 		var inputVal = document.getElementById('input').value
-		if (inputVal.length !== 4) {
-			alert('please enter a valid stock ticker')
+		if (inputVal !== inputVal.toUpperCase() || inputVal.length > 5) {
+			alert('please enter a valid uppercase stock ticker')
 			return
 		}
 
@@ -26,6 +26,9 @@ export default function Sentiment() {
 		xhr.send(data)
 		xhr.onreadystatechange = (e) => {
 			let jsonResponse = JSON.parse(xhr.responseText)
+			if (jsonResponse.error) {
+				alert(jsonResponse.error)
+			}
 			createGraph(jsonResponse)
 			setLoading(false)
 		}
