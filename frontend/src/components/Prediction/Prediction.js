@@ -494,7 +494,8 @@ export default function Prediction() {
 			<div className="desc-container">
 				<p className="desc">
 					Please select which company and window size you want to predict the
-					next month for
+					next month for. A smaller window size means you are okay with more
+					volatility in price.
 				</p>
 			</div>
 			<div className="desc2-container">
