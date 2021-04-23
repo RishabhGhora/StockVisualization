@@ -56,13 +56,14 @@ https://cran.r-project.org/web/packages/rtweet/vignettes/auth.html
 Please make sure you have Node.js with npm and yarn installed and it is updated to the most
 recent stable release.
 
-CD into frontend in a new terminal window
+Open Terminal
 
 #### With yarn
 
-1. Run `yarn install`
-2. Run `yarn start`
-3. It might take a couple of min to start, if the window does not open automatically navigate to localhost:3000.
+1. Enter frontend directory `cd frontend`
+2. Run `yarn install`
+3. Run `yarn start`
+4. It might take a couple of min to start, if the window does not open automatically navigate to localhost:3000.
 
 ## Execution
 
