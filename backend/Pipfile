@@ -12,6 +12,11 @@ python-dotenv = "*"
 nltk = "*"
 transformers = "*"
 torch = "*"
+matplotlib = "*"
+keras = "*"
+numpy = "*"
+tensorflow = "*"
+scikit-learn = "*"
 
 [dev-packages]
 

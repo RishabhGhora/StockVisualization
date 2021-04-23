@@ -2,6 +2,8 @@
 import os
 import tweepy as tw
 import pandas as pd
+from extrapolate_backend import extrapolate_func
+import csv
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from datetime import datetime, timedelta
@@ -51,19 +53,31 @@ def get_sentiment():
 
     # Create dataframe
     df = pd.DataFrame(data)
+    keys1, keys2 = [], []
 
     # Get data for graphs 
     positive_df = df[df['sentiment']=='positive']
     negative_df = df[df['sentiment']=='negative']
     neutral_df = df[df['sentiment']=='neutral']
+    if len(positive_df.index) > 0:
+        keys1.append('positive_count')
+        keys2.append('positive')
+    if len(negative_df.index) > 0:
+        keys1.append('negative_count')
+        keys2.append('negative')
+    if len(neutral_df.index) > 0:
+        keys1.append('neutral_count')
+        keys2.append('neutral')
+   
+
     cols = ['count', 'negative_count', 'neutral_count', 'positive_count']
     grouped_df = pd.DataFrame([], columns=cols)
     grouped_df['count'] = df['sentiment'].groupby(df['created_at']).count()
-    grouped_df[['negative_count','neutral_count','positive_count']] = \
-                df.groupby(['created_at','sentiment'], as_index=False)\
+    grouped_df[keys1] = \
+                df.reset_index().groupby(['created_at','sentiment'], as_index=False)\
                 .size()\
                 .pivot(index='created_at', columns='sentiment', values='size')\
-                    [['negative','neutral','positive']]\
+                    [keys2]\
                 .fillna(0)
     idx_negative = negative_df.groupby(['created_at'])['favorite_count'].transform(max) == negative_df['favorite_count']
     top_negative = negative_df[idx_negative]
@@ -97,6 +111,80 @@ def get_sentiment():
         output[row['created_at']] = row_data
 
     return jsonify(output)
+
+@app.route('/', methods=['POST'])
+@cross_origin()
+def get_plots():
+    with open(f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', 'w', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        for row in request.json["data"]:
+            spamwriter.writerow(row)
+    if request.json["company"] == "Tesla":
+        if request.json["window"] == "30":
+            result = extrapolate_func(int(request.json["window"]), "TSLA", "best_weights/best_weights_TSLA_wsize30.hdf5",
+            "best_weights/TSLA_wsize30_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/tesla/",
+            "reddit/TSLA/", "twitter/TSLA/", [2019])
+        elif request.json["window"] == "60":
+            result = extrapolate_func(int(request.json["window"]), "TSLA", "best_weights/best_weights_TSLA_wsize60.hdf5",
+            "best_weights/TSLA_wsize60_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/tesla/",
+            "reddit/TSLA/", "twitter/TSLA/", [2019])
+        elif request.json["window"] == "90":
+            result = extrapolate_func(int(request.json["window"]), "TSLA", "best_weights/best_weights_TSLA_wsize90.hdf5",
+            "best_weights/TSLA_wsize90_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/tesla/",
+            "reddit/TSLA/", "twitter/TSLA/", [2019])
+    elif request.json["company"] == "Amazon":
+        if request.json["window"] == "30":
+            result = extrapolate_func(int(request.json["window"]), "AMZN", "best_weights/best_weights_AMZN_wsize30.hdf5",
+            "best_weights/AMZN_wsize30_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/amazon/",
+            "reddit/AMZN/", "twitter/AMZN/", [2019])
+        elif request.json["window"] == "60":
+            result = extrapolate_func(int(request.json["window"]), "AMZN", "best_weights/best_weights_AMZN_wsize60.hdf5",
+            "best_weights/AMZN_wsize60_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/amazon/",
+            "reddit/AMZN/", "twitter/AMZN/", [2019])
+        elif request.json["window"] == "90":
+            result = extrapolate_func(int(request.json["window"]), "AMZN", "best_weights/best_weights_AMZN_wsize90.hdf5",
+            "best_weights/AMZN_wsize90_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/amazon/",
+            "reddit/AMZN/", "twitter/AMZN/", [2019])
+    elif request.json["company"] == "Apple":
+        if request.json["window"] == "30":
+            result = extrapolate_func(int(request.json["window"]), "AAPL", "best_weights/best_weights_AAPL_wsize30.hdf5",
+            "best_weights/AAPL_wsize30_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/apple/",
+            "reddit/AAPL/", "twitter/AAPL/", [2019])
+        elif request.json["window"] == "60": 
+            result = extrapolate_func(int(request.json["window"]), "AAPL", "best_weights/best_weights_AAPL_wsize60.hdf5",
+            "best_weights/AAPL_wsize60_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/apple/",
+            "reddit/AAPL/", "twitter/AAPL/", [2019])  
+        elif request.json["window"] == "90": 
+            result = extrapolate_func(int(request.json["window"]), "AAPL", "best_weights/best_weights_AAPL_wsize90.hdf5",
+            "best_weights/AAPL_wsize90_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/apple/",
+            "reddit/AAPL/", "twitter/AAPL/", [2019])
+    elif request.json["company"] == "Microsoft":
+        if request.json["window"] == "30":
+            result = extrapolate_func(int(request.json["window"]), "MSFT", "best_weights/best_weights_MSFT_wsize30.hdf5",
+            "best_weights/MSFT_wsize30_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/microsoft/",
+            "reddit/MSFT/", "twitter/MSFT/", [2019])
+        elif request.json["window"] == "60": 
+            result = extrapolate_func(int(request.json["window"]), "MSFT", "best_weights/best_weights_MSFT_wsize60.hdf5",
+            "best_weights/MSFT_wsize60_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/microsoft/",
+            "reddit/MSFT/", "twitter/MSFT/", [2019])
+        elif request.json["window"] == "90": 
+            result = extrapolate_func(int(request.json["window"]), "MSFT", "best_weights/best_weights_MSFT_wsize90.hdf5",
+            "best_weights/MSFT_wsize90_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/microsoft/",
+            "reddit/MSFT/", "twitter/MSFT/", [2019])
+    elif request.json["company"] == "Google":
+        if request.json["window"] == "30":
+            result = extrapolate_func(int(request.json["window"]), "GOOGL", "best_weights/best_weights_GOOGL_wsize30.hdf5",
+            "best_weights/GOOGL_wsize30_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/google/",
+            "reddit/GOOGL/", "twitter/GOOGL/", [2019])
+        elif request.json["window"] == "60": 
+            result = extrapolate_func(int(request.json["window"]), "GOOGL", "best_weights/best_weights_GOOGL_wsize60.hdf5",
+            "best_weights/GOOGL_wsize60_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/google/",
+            "reddit/GOOGL/", "twitter/GOOGL/", [2019])
+        elif request.json["window"] == "90": 
+            result = extrapolate_func(int(request.json["window"]), "GOOGL", "best_weights/best_weights_GOOGL_wsize90.hdf5",
+            "best_weights/GOOGL_wsize90_sc_dict.p", f'{request.json["company"]}_{request.json["window"]}_5weeks.csv', "stock_data/google/",
+            "reddit/GOOGL/", "twitter/GOOGL/", [2019])
+    return jsonify(result)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
