@@ -37,8 +37,8 @@ The frontend contains visualizations that will help someone analyze stock price 
    https://www.python.org/downloads/release/python-370/
    https://pypi.org/project/pipenv/
 
-6. Rename .env.example to .env `mv .env.example .env`
-7. Enter backend directory `cd backend`
+6. Enter backend directory `cd backend`
+7. Rename .env.example to .env `mv .env.example .env`
 8. Run `pipenv --python 3.7`
 9. Run `pipenv install`
 10. Run `pipenv run dev`
@@ -74,3 +74,22 @@ The second graph is the Prediction graph. Here the user can experiment with diff
 The third graph is the Recent Sentiment graph. This allows the user to enter any stock ticker and see how sentiment is about that ticker on Twitter over the past 7 days. This allows users to get an idea about how sentiment looks right now. This graph is limited because we are using the free version of twitter API which only returns 100 results per request and we are filtering by their definition of “popular” tweets which have a certain number of favorites. This is done to ensure we are not only analyzing 100 tweets from the current day with little to none activity. However, expanding this functionality with the correct Twitter API credentials (pro or educational account) would expand the number of results returned from these queries, but getting the sentiment using our model would take longer.
 
 ### Note to use the third graph please use UPPERCASE stock symbols with no special characters such as '$'
+
+## Instructions to load data and running training data
+
+All the data will now be at this link: https://drive.google.com/drive/folders/1RQlCXTDjg-_fbt9_nhTIWSsGnP4_sh4K?usp=sharing
+
+To get the data:
+
+1. Download the twitter(`company_tweets_2015_to_2019.csv`, e.g. `TSLA_tweets_2015_to_2019.csv`) and reddit data(`company_reddit_2015_to_2019.csv`, e.g. `TSLA_reddit_2015_to_2019.csv`) from google drive and put it in the same path as starter_code.
+2. Run `starter_code.py company` or any other company (should enter the stock name). It creates two directories (`twitter/company/` and `reddit/company/`) and adds the data for each year to those directories.
+3. Run `load_data.py` with the following arguments: `load_data(stock_name, stock_path, reddit_path, twitter_path, year_list, return_columns_list)`
+
+- For example, for getting data of TSLA for years 2015 to 1018 and the desired outputs listed below, run `load_data("TSLA", "stock_data/tesla/", "reddit/TSLA/", "twitter/TSLA/", [2015, 2016, 2017, 2018], ['Close','positive_reddit','negative_reddit', 'neutral_reddit', 'count_reddit','comment_num_reddit', 'positive_twitter', 'negative_twitter','neutral_twitter', 'count_twitter', 'comment_num_twitter','retweet_num_twitter', 'like_num_twitter'])`
+- If you want all the columns in the returned array, pass an empty list `[]` as `return_columns_list` in `load_data()`.
+
+After setting up the data and you know the stock data path, reddit data path and twitter data path for the companies you want to train models on:
+
+1. Use the training command: `python3 main_keras.py --window_size 90 --company TSLA --stockdir stock_data/tesla/ --redditdir reddit/TSLA/ --twitterdir twitter/TSLA/ --trainyears 2015 2016 2017 2018 --testyears 2019` . This example trains a model on TESLA with window size 90 for 2015 - 2018 and evaluates on 2019.
+2. Use the prediction command: `python3 predict_keras.py --window_size 90 --company TSLA --modelpath weights/best_weights_TSLA_wsize90.hdf5 --scpath weights/TSLA_wsize90_sc_dict.p --stockdir stock_data/tesla/ --redditdir reddit/TSLA/ --twitterdir twitter/TSLA/ --years 2019` . Make sure to give the right model path and scaler path for the arguments provided.
+3. For predicting into the future, you can use the extrapolate_backend script: `python3 extrapolate_backend.py --window_size 90 --company TSLA --modelpath weights/best_weights_TSLA_wsize90.hdf5 --scpath weights/TSLA_wsize90_sc_dict.p --fdpath Tesla_5_weeks.csv --stockdir stock_data/tesla/ --redditdir reddit/TSLA/ --twitterdir twitter/TSLA/ --years 2019`
