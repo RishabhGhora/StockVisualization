@@ -12,7 +12,7 @@ export default function Prediction() {
 		var svg = d3.select('#graph2')
 		svg.selectAll('.linegraph').remove()
 		let xhr = new XMLHttpRequest()
-		const url = 'http://0.0.0.0:5000/'
+		const url = 'http://localhost:5000/'
 		xhr.open('POST', url, true)
 		xhr.setRequestHeader('Content-Type', 'application/json')
 		let weekData = [

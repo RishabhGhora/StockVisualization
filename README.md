@@ -41,7 +41,7 @@ The frontend contains visualizations that will help someone analyze stock price 
 7. Rename .env.example to .env `mv .env.example .env`
 8. Run `pipenv --python 3.7`
 9. Run `pipenv install`
-10. Run `pipenv run dev`
+10. Run `pipenv run dev` (Ignore nltk certificate error & any errors related to GPU)
 11. Now the backend server is running on http://localhost:5000
 
 #### NOTE
@@ -73,7 +73,7 @@ The second graph is the Prediction graph. Here the user can experiment with diff
 
 The third graph is the Recent Sentiment graph. This allows the user to enter any stock ticker and see how sentiment is about that ticker on Twitter over the past 7 days. This allows users to get an idea about how sentiment looks right now. This graph is limited because we are using the free version of twitter API which only returns 100 results per request and we are filtering by their definition of “popular” tweets which have a certain number of favorites. This is done to ensure we are not only analyzing 100 tweets from the current day with little to none activity. However, expanding this functionality with the correct Twitter API credentials (pro or educational account) would expand the number of results returned from these queries, but getting the sentiment using our model would take longer.
 
-### Note to use the third graph please use UPPERCASE stock symbols with no special characters such as '$'
+#### Note to use the third graph please use UPPERCASE stock symbols with no special characters such as '$'
 
 ## Instructions to load data and running training data
 
@@ -93,3 +93,14 @@ After setting up the data and you know the stock data path, reddit data path and
 1. Use the training command: `python3 main_keras.py --window_size 90 --company TSLA --stockdir stock_data/tesla/ --redditdir reddit/TSLA/ --twitterdir twitter/TSLA/ --trainyears 2015 2016 2017 2018 --testyears 2019` . This example trains a model on TESLA with window size 90 for 2015 - 2018 and evaluates on 2019.
 2. Use the prediction command: `python3 predict_keras.py --window_size 90 --company TSLA --modelpath weights/best_weights_TSLA_wsize90.hdf5 --scpath weights/TSLA_wsize90_sc_dict.p --stockdir stock_data/tesla/ --redditdir reddit/TSLA/ --twitterdir twitter/TSLA/ --years 2019` . Make sure to give the right model path and scaler path for the arguments provided.
 3. For predicting into the future, you can use the extrapolate_backend script: `python3 extrapolate_backend.py --window_size 90 --company TSLA --modelpath weights/best_weights_TSLA_wsize90.hdf5 --scpath weights/TSLA_wsize90_sc_dict.p --fdpath Tesla_5_weeks.csv --stockdir stock_data/tesla/ --redditdir reddit/TSLA/ --twitterdir twitter/TSLA/ --years 2019`
+
+#### Note
+
+Our D3 visualizations uses code from
+https://bl.ocks.org/mbostock/34f08d5e11952a80609169b7917d4172
+https://gist.github.com/EfratVil/92f894ac0ba265192411e73f633a3e2f
+http://bl.ocks.org/Potherca/b9f8b3d0a24e0b20f16d
+http://bl.ocks.org/williaster/10ef968ccfdc71c30ef8
+https://github.com/arnauddri/d3-stock
+https://www.d3-graph-gallery.com/graph/line_basic.html
+https://bl.ocks.org/ProQuestionAsker/8382f70af7f4a7355827c6dc4ee8817d

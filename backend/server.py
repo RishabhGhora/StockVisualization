@@ -10,6 +10,17 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv
 from finBert.sentiment import get_prediction
 
+# Need to do one time
+import nltk
+import ssl
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    pass
+else:
+    ssl._create_default_https_context = _create_unverified_https_context
+nltk.download('punkt')
+
 # Load env variables
 load_dotenv()
 

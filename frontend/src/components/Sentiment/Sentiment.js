@@ -18,7 +18,7 @@ export default function Sentiment() {
 		}
 
 		let xhr = new XMLHttpRequest()
-		const url = 'http://0.0.0.0:5000/get_sentiment'
+		const url = 'http://localhost:5000/get_sentiment'
 		xhr.open('POST', url, true)
 		xhr.setRequestHeader('Content-Type', 'application/json')
 		let data = JSON.stringify({ query: inputVal })
