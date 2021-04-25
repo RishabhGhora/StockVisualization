@@ -41,7 +41,7 @@ The frontend contains visualizations that will help someone analyze stock price 
 7. Rename .env.example to .env `mv .env.example .env`
 8. Run `pipenv --python 3.7`
 9. Run `pipenv install`
-10. Run `pipenv run dev` (Ignore nltk certificate error & any errors related to GPU)
+10. Run `pipenv run dev` (Ignore any errors related to GPU)
 11. Now the backend server is running on http://localhost:5000
 
 #### NOTE

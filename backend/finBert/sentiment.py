@@ -4,9 +4,6 @@ import pandas as pd
 import numpy as np
 import torch 
 import re
-# Only need to run once 
-import nltk
-nltk.download('punkt')
 
 
 # UTILITY FUNCTIONS 
